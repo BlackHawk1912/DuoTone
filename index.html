@@ -1,19 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Duotone Image Editor</title>
+    <title>Frosted Glass Buttons</title>
+    <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-
 <body>
-    <div class="container">
-        <canvas id="duotoneCanvas" width="800" height="800"></canvas>
-        <button id="uploadButton">Upload New Image</button>
-    </div>
-    <script src="script.js"></script>
-</body>
+  <div id="button-container">
+      <div class="button plus-symbol" id="uploadButton"><i class="fa-regular fa-plus"></i></div>
+      <div class="button down-arrow" id="downloadButton"><i class="fa-solid fa-arrow-down"></i></div>
+  </div>
 
+  <div id="image-container">
+      <!-- <img class="background-image" src="background.jpg" alt="Background Image"> -->
+      <img id="lockscreen-filter" src="lockscreen.png" alt="Background Image">
+      <canvas class="background-image" id="original-image"width="0" height="0"></canvas>
+      <canvas class="background-image" id="duotoneCanvas"width="0" height="0"></canvas>
+  </div>
+
+  <div id="bottom-element">
+    <div id="colorSwitch-label">Stilfarbe</div>
+    <div class="colorSwitch-container">
+      <div class="colorSwitch" id="switch-1" onclick="console.log(document.getElementById('imageID'));"> </div>
+      <div class="colorSwitch" id="switch-2"> </div>
+      <div class="colorSwitch" id="switch-3"> </div>
+      <div class="colorSwitch" id="switch-4"> </div>
+      <div class="colorSwitch" id="switch-5"> </div>
+      <div class="colorSwitch" id="switch-6"> </div>
+      <div class="colorSwitch" id="switch-7"> </div>
+      <div class="colorSwitch" id="switch-8"> </div>
+      <div class="colorSwitch" id="switch-9"> </div>
+      <div class="colorSwitch" id="switch-10"> </div>
+      <div class="colorSwitch" id="switch-11"> </div>
+      <div class="colorSwitch" id="switch-12"> </div>      
+    </div>
+</div>
+<script src="duotone.js"></script>
+<script src="script.js"></script> 
+</body>
 </html>

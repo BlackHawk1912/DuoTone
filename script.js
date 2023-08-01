@@ -1,92 +1,88 @@
-// Funktion für den Duotone-Filter
-function Duotone(id, src, primaryClr, secondaryClr, actions = (ctx) => null) {
-    let canvas = document.getElementById(id);
-    let ctx = canvas.getContext("2d");
-    ctx.clearRect(0, 0, canvas.width, canvas.height); // Löscht die Leinwand vor dem Zeichnen des neuen Bildes
+let originalImage = new Image();
+let filteredImage = new Image();
 
-    let downloadedImg = new Image();
-    downloadedImg.crossOrigin = ""; // to allow us to manipulate the image without tainting canvas
-    downloadedImg.onload = function () {
-        ctx.drawImage(downloadedImg, 0, 0, canvas.width, canvas.height); // draws image to canvas on load
-        // Converts to grayscale by averaging the values of each pixel
-        imageData = ctx.getImageData(0, 0, 800, 800);
-        const pixels = imageData.data;
-        for (let i = 0; i < pixels.length; i += 4) {
-            const red = pixels[i];
-            const green = pixels[i + 1];
-            const blue = pixels[i + 2];
-            // Using relative luminance to convert to grayscale
-            const avg = Math.round((0.299 * red + 0.587 * green + 0.114 * blue) * 1);
-            pixels[i] = avg;
-            pixels[i + 1] = avg;
-            pixels[i + 2] = avg;
-        }
-        // Puts the grayscaled image data back into the canvas
-        ctx.putImageData(imageData, 0, 0);
-        // puts the duotone image into canvas with multiply and lighten
-        ctx.globalCompositeOperation = "multiply";
-        ctx.fillStyle = primaryClr; // colour for highlights
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        // lighten
-        ctx.globalCompositeOperation = "lighten";
-        ctx.fillStyle = secondaryClr; // colour for shadows
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        // calls any other draws that you want through the function parameter passed in
-        actions(ctx);
-    };
-    downloadedImg.src = src; // source for the image
-}
-
-// Function to handle image upload
 function handleImageUpload(event) {
-    const file = event.target.files[0];
-    const reader = new FileReader();
+  const file = event.target.files[0];
 
-    reader.onload = function () {
-        const image = new Image();
-        image.onload = function () {
-            Duotone("duotoneCanvas", image.src, "#FF0000", "#00FF00");
-        };
-        image.src = reader.result;
-    };
+  originalImage.onload = function () {
+    const canvas = document.getElementById("duotoneCanvas");
+    canvas.width = originalImage.width;
+    canvas.height = originalImage.height;
 
-    if (file) {
-        reader.readAsDataURL(file);
-    }
+    const originalCanvas = document.getElementById("original-image");
+    originalCanvas.width = originalImage.width;
+    originalCanvas.height = originalImage.height;
+
+    // Save the original image in the "originalImage" object
+    originalCanvas.getContext("2d").drawImage(originalImage, 0, 0);
+
+    // Apply the duotone effect to the "duotoneCanvas"
+    Duotone("duotoneCanvas", originalImage, duotoneSwitches[5].color1, duotoneSwitches[0].color2);
+  };
+
+  if (file) {
+    const objectURL = URL.createObjectURL(file);
+    originalImage.src = objectURL;
+  }
 }
 
-// Funktionen für die Buttons zur Änderung der Farbkombinationen
-function applyColorCombination1() {
-    Duotone("duotoneCanvas", "path/to/image", "#FF0000", "#00FF00");
-}
-
-function applyColorCombination2() {
-    Duotone("duotoneCanvas", "path/to/image", "#00FF00", "#FF0000");
-}
-
-function applyColorCombination3() {
-    Duotone("duotoneCanvas", "path/to/image", "#0000FF", "#FFFF00");
-}
 
 document.getElementById("uploadButton").addEventListener("click", function () {
-    const fileInput = document.createElement("input");
-    fileInput.type = "file";
-    fileInput.accept = "image/*";
-    fileInput.addEventListener("change", handleImageUpload);
-    fileInput.click();
+  const fileInput = document.createElement("input");
+  fileInput.type = "file";
+  fileInput.accept = "image/*";
+  fileInput.addEventListener("change", handleImageUpload);
+  fileInput.click();
 });
 
-// Button-Elemente auswählen und Event-Listener hinzufügen
-document.getElementById("buttonCombination1").addEventListener("click", applyColorCombination1);
-document.getElementById("buttonCombination2").addEventListener("click", applyColorCombination2);
-document.getElementById("buttonCombination3").addEventListener("click", applyColorCombination3);
+// Helper function to handle duotone switches
+function handleDuotoneSwitch(color1, color2) {
+  return function (event) {
+    document.getElementById("duotoneCanvas") = document.getElementById("original-image")
+    
+    Duotone("duotoneCanvas", image, color1, color2);
+  };
+}
+
+// Set up event listeners for duotone switches
+const duotoneSwitches = [
+  { switchId: "switch-1", color1:"#29d8f7", color2:"#5b398f" },
+  { switchId: "switch-2", color1:"#6fa1fa", color2:"#702a58" },
+  { switchId: "switch-3", color1:"#d571f7", color2:"#3a439f" },
+  { switchId: "switch-4", color1:"#c05cf2", color2:"#2f3744" },
+  { switchId: "switch-5", color1:"#e86d99", color2:"#3d40a2" },
+  { switchId: "switch-6", color1:"#f25068", color2:"#5f1d65" },
+  { switchId: "switch-7", color1:"#eed27f", color2:"#4f355a" },
+  { switchId: "switch-8", color1:"#edc07d", color2:"#ad4e6c" },
+  { switchId: "switch-9", color1:"#eaa47f", color2:"#613184" },
+  { switchId: "switch-10", color1:"#f2ed9b", color2:"#8e3c75" },
+  { switchId: "switch-11", color1:"#d5dd78", color2:"#4b3b79" },
+  { switchId: "switch-12", color1:"#90cc5a", color2:"#2a4466" },  
+];
+
+for (const { switchId, color1, color2 } of duotoneSwitches) {
+  document.getElementById(switchId).addEventListener("click", handleDuotoneSwitch(color1, color2));
+}
 
 // Function to handle image download
-document.getElementById("duotoneCanvas").addEventListener("click", function () {
-    const canvas = document.getElementById("duotoneCanvas");
-    const image = canvas.toDataURL("image/png");
-    const anchor = document.createElement("a");
-    anchor.href = image;
-    anchor.download = "duotone_image.png";
-    anchor.click();
+document.getElementById("downloadButton").addEventListener("click", function () {
+  const canvas = document.getElementById("duotoneCanvas");
+  const image = canvas.toDataURL("image/png");
+  const anchor = document.createElement("a");
+  anchor.href = image;
+  anchor.download = "duotone_image.png";
+  anchor.click();
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  const lockscreenFilter = document.getElementById("lockscreen-filter");
+  const imageContainer = document.getElementById("image-container");
+  // const buttonContainer = document.getElementById("button-container");
+  // const bottomElement = document.getElementById("bottom-element");
+
+    imageContainer.addEventListener("click", function () {
+      document.getElementById("bottom-element").classList.toggle("hide");
+      document.getElementById("lockscreen-filter").classList.toggle("hide");
+      document.getElementById("button-container").classList.toggle("hide");
+    });
 });

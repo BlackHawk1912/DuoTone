@@ -9,39 +9,40 @@ Libraries like HTMLtoCanvas state in their documentation that CSS filters are no
 to do so in CSS. This is a purely JS and Canvas implementation.
 */
 
-function Duotone(id, src, primaryClr, secondaryClr, actions = (ctx) => null) {
+function Duotone(id, image, primaryClr, secondaryClr, actions = (ctx) => null) {
+    console.log('called');
     let canvas = document.getElementById(id);
     let ctx = canvas.getContext("2d");
-
-    let downloadedImg = new Image();
-    downloadedImg.crossOrigin = ""; // to allow us to manipulate the image without tainting canvas
-    downloadedImg.onload = function () {
-        ctx.drawImage(downloadedImg, 0, 0, canvas.width, canvas.height); // draws image to canvas on load
-        // Converts to grayscale by averaging the values of each pixel
-        imageData = ctx.getImageData(0, 0, 800, 800);
-        const pixels = imageData.data;
-        for (let i = 0; i < pixels.length; i += 4) {
-            const red = pixels[i];
-            const green = pixels[i + 1];
-            const blue = pixels[i + 2];
-            // Using relative luminance to convert to grayscale
-            const avg = Math.round((0.299 * red + 0.587 * green + 0.114 * blue) * 1);
-            pixels[i] = avg;
-            pixels[i + 1] = avg;
-            pixels[i + 2] = avg;
-        }
-        // Puts the grayscaled image data back into the canvas
-        ctx.putImageData(imageData, 0, 0);
-        // puts the duotone image into canvas with multiply and lighten
-        ctx.globalCompositeOperation = "multiply";
-        ctx.fillStyle = primaryClr; // colour for highlights
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        // lighten
-        ctx.globalCompositeOperation = "lighten";
-        ctx.fillStyle = secondaryClr; // colour for shadows
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        // calls any other draws that you want through the function parameter passed in
-        actions(ctx);
-    };
-    downloadedImg.src = src; // source for the image
-}
+  
+    ctx.drawImage(image, 0, 0, canvas.width, canvas.height); // draws image to canvas
+  
+    // Convert to grayscale by averaging the values of each pixel
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const pixels = imageData.data;
+    for (let i = 0; i < pixels.length; i += 4) {
+      const red = pixels[i];
+      const green = pixels[i + 1];
+      const blue = pixels[i + 2];
+      // Using relative luminance to convert to grayscale
+      const avg = Math.round((0.299 * red + 0.587 * green + 0.114 * blue) * 1);
+      pixels[i] = avg;
+      pixels[i + 1] = avg;
+      pixels[i + 2] = avg;
+    }
+  
+    // Puts the grayscaled image data back into the canvas
+    ctx.putImageData(imageData, 0, 0);
+  
+    // Puts the duotone image into the canvas with multiply and lighten
+    ctx.globalCompositeOperation = "multiply";
+    ctx.fillStyle = primaryClr; // colour for highlights
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  
+    // lighten
+    ctx.globalCompositeOperation = "lighten";
+    ctx.fillStyle = secondaryClr; // colour for shadows
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  
+    // Call any other drawing operations through the function parameter passed in
+    actions(ctx);
+  }
