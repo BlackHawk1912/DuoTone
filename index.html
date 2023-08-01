@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Frosted Glass Buttons</title>
-    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="manifest.webmanifest">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -38,7 +38,16 @@
       <div class="colorSwitch" id="switch-12"> </div>      
     </div>
 </div>
+<script>
+  if (navigator.serviceWorker) {
+    navigator.serviceWorker.register(
+      '/DuoTone/serviceWorker.js',
+      { scope: '/DuoTone/' }
+    )
+  }
+</script>
 <script src="duotone.js"></script>
 <script src="script.js"></script> 
+
 </body>
 </html>
