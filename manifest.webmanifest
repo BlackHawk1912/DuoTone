@@ -1,6 +1,5 @@
 {
   // Name of the app and short name in case there isn't enough space
-  "name": "DuoTone",
   "short_name": "DuoTone",
   // Description what your app is
   "description": "Github Page as a Progressive Web App",
@@ -13,14 +12,32 @@
   // Display of the app. 
   //This could be "standalone", "fullscreen", "minimal-ui" or "browser"
   "display": "standalone",
+  "prefer_related_applications": false,
   // The possible icons to display. Make sure to change the src URL,
   // the type and the size to your needs. If the size isn't correct, 
   // you may not be able to install the app. 
   "icons": [
     {
+      "src": "/DuoTone/img/icon-sm.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
       "src": "/DuoTone/img/icon.png",
       "type": "image/png",
-      "sizes": "128x128"
+      "sizes": "512x512"
+    },
+    {
+      "src": "/DuoTone/img/icon-sm-mask.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/DuoTone/img/icon-mask.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "maskable"
     }
   ]
 }
