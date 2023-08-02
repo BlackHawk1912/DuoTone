@@ -5,7 +5,8 @@
   "start_url": "./",
   "background_color": "#ffffff",
   "theme_color": "#ff0000",
-  "display": "standalone",
+  "display": "fullscreen",
+  // "display": "standalone",
   "icons": [
     {
       "src": "img/icon-sm.png",
