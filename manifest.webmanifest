@@ -5,7 +5,7 @@
   "description": "Github Page as a Progressive Web App",
   // Scope and start URL - these need to change to yours
   "scope": "/DuoTone/",
-  "start_url": "/",
+  "start_url": "/DuoTone/",
   // colours of the app as displayed in the installer
   "background_color": "#ffffff",
   "theme_color": "#ffffff",
