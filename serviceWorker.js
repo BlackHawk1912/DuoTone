@@ -1,26 +1,47 @@
-var GHPATH = '/DuoTone';
-var APP_PREFIX = 'duotonepwa_';
+// This is the "Offline page" service worker
 
-// The version of the cache. Every time you change any of the files
-// you need to change this version (version_01, version_02…). 
-// If you don't change the version, the service worker will give your
-// users the old files!
-var VERSION = 'version_00';
+importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js');
 
-// The files to make available for offline use. make sure to add 
-// others to this list
-var URLS = [
-  `${GHPATH}/`,
-  `${GHPATH}/background.jpg`,
-  `${GHPATH}/duotone.js`,
-  `${GHPATH}/duotone.svg`,
-  `${GHPATH}/index.html`,
-  `${GHPATH}/style.css`,
-  `${GHPATH}/script.js`,
-  `${GHPATH}/lockscreen.png`,
-  `${GHPATH}/manifest.json`,
-  `${GHPATH}/img/icon-sm.png`,
-  `${GHPATH}/img/icon.png`,
-  `${GHPATH}/img/icon-sm-mask.png`,
-  `${GHPATH}/img/icon-mask.png`
-]
+const CACHE = "pwabuilder-page";
+
+// TODO: replace the following with the correct offline fallback page i.e.: const offlineFallbackPage = "offline.html";
+const offlineFallbackPage = "index.html";
+
+self.addEventListener("message", (event) => {
+  if (event.data && event.data.type === "SKIP_WAITING") {
+    self.skipWaiting();
+  }
+});
+
+self.addEventListener('install', async (event) => {
+  event.waitUntil(
+    caches.open(CACHE)
+      .then((cache) => cache.add(offlineFallbackPage))
+  );
+});
+
+if (workbox.navigationPreload.isSupported()) {
+  workbox.navigationPreload.enable();
+}
+
+self.addEventListener('fetch', (event) => {
+  if (event.request.mode === 'navigate') {
+    event.respondWith((async () => {
+      try {
+        const preloadResp = await event.preloadResponse;
+
+        if (preloadResp) {
+          return preloadResp;
+        }
+
+        const networkResp = await fetch(event.request);
+        return networkResp;
+      } catch (error) {
+
+        const cache = await caches.open(CACHE);
+        const cachedResp = await cache.match(offlineFallbackPage);
+        return cachedResp;
+      }
+    })());
+  }
+});
