@@ -18,5 +18,9 @@ var URLS = [
   `${GHPATH}/style.css`,
   `${GHPATH}/script.js`,
   `${GHPATH}/lockscreen.png`,
-  `${GHPATH}/manifest.json`
+  `${GHPATH}/manifest.json`,
+  `${GHPATH}/img/icon-sm.png`,
+  `${GHPATH}/img/icon.png`,
+  `${GHPATH}/img/icon-sm-mask.png`,
+  `${GHPATH}/img/icon-mask.png`
 ]
