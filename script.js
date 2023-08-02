@@ -40,7 +40,7 @@ channel.onmessage = (event) => {
   Duotone(
     "duotoneCanvas",
     file,
-    duotoneSwitches[5].color1,
+    duotoneSwitches[0].color1,
     duotoneSwitches[0].color2
   );
 };
