@@ -55,8 +55,17 @@ document.getElementById("uploadButton").addEventListener("click", function () {
 
 // Helper function to handle duotone switches
 function handleDuotoneSwitch(color1, color2) {
-  return function (event) {
-    // Use the global "originalImage" in this function
+  return function () {
+    // Remove 'activeSwitch' class from all switches
+    const switches = document.getElementsByClassName("colorSwitch");
+    for (const switchElement of switches) {
+      switchElement.classList.remove("activeSwitch");
+    }
+
+    // Add 'activeSwitch' class to the clicked switch
+    this.classList.add("activeSwitch");
+
+    // Apply the duotone effect using the provided colors
     Duotone("duotoneCanvas", originalImage, color1, color2);
   };
 }
@@ -77,10 +86,10 @@ const duotoneSwitches = [
   { switchId: "switch-12", color1: "#90cc5a", color2: "#2a4466" },
 ];
 
+// Set up event listeners for duotone switches
 for (const { switchId, color1, color2 } of duotoneSwitches) {
-  document
-    .getElementById(switchId)
-    .addEventListener("click", handleDuotoneSwitch(color1, color2));
+  const switchElement = document.getElementById(switchId);
+  switchElement.addEventListener("click", handleDuotoneSwitch(color1, color2));
 }
 
 // Function to handle image download

@@ -158,7 +158,7 @@ body {
     grid-column-gap: 0px;
     grid-row-gap: 0px;
 }
-.colorSwitch:active {
+.colorSwitch.activeSwitch {
     outline: 3px solid white;
     outline-offset: 2.5px;
 }
