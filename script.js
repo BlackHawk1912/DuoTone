@@ -25,7 +25,13 @@ function handleImageUpload(event) {
     originalImage.src = objectURL;
   }
 }
+// Listen for messages from the service worker
+const channel = new BroadcastChannel('shareChannel');
+channel.onmessage = event => {
+  const file = event.data.file;
+  Duotone("duotoneCanvas", file, duotoneSwitches[5].color1, duotoneSwitches[0].color2);
 
+};
 
 document.getElementById("uploadButton").addEventListener("click", function () {
   const fileInput = document.createElement("input");

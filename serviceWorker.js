@@ -1,6 +1,8 @@
 // This is the "Offline page" service worker
 
-importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js');
+importScripts(
+  "https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js"
+);
 
 const CACHE = "pwabuilder-page";
 
@@ -13,10 +15,9 @@ self.addEventListener("message", (event) => {
   }
 });
 
-self.addEventListener('install', async (event) => {
+self.addEventListener("install", async (event) => {
   event.waitUntil(
-    caches.open(CACHE)
-      .then((cache) => cache.add(offlineFallbackPage))
+    caches.open(CACHE).then((cache) => cache.add(offlineFallbackPage))
   );
 });
 
@@ -24,24 +25,64 @@ if (workbox.navigationPreload.isSupported()) {
   workbox.navigationPreload.enable();
 }
 
-self.addEventListener('fetch', (event) => {
-  if (event.request.mode === 'navigate') {
-    event.respondWith((async () => {
-      try {
-        const preloadResp = await event.preloadResponse;
+self.addEventListener("fetch", (event) => {
+  if (event.request.mode === "navigate") {
+    event.respondWith(
+      (async () => {
+        try {
+          const preloadResp = await event.preloadResponse;
 
-        if (preloadResp) {
-          return preloadResp;
+          if (preloadResp) {
+            return preloadResp;
+          }
+
+          const networkResp = await fetch(event.request);
+          return networkResp;
+        } catch (error) {
+          const cache = await caches.open(CACHE);
+          const cachedResp = await cache.match(offlineFallbackPage);
+          return cachedResp;
         }
+      })()
+    );
+  }
+};
 
-        const networkResp = await fetch(event.request);
-        return networkResp;
-      } catch (error) {
+  //handle image share receiver
+//   const url = new URL(event.request.url);
+//   if (
+//     event.request.method === "POST" &&
+//     url.pathname === "/" &&
+//     url.searchParams.has("share-target")
+//   ) {
+//     event.respondWith(Response.redirect("/?receiving-file-share=1"));
 
-        const cache = await caches.open(CACHE);
-        const cachedResp = await cache.match(offlineFallbackPage);
-        return cachedResp;
-      }
-    })());
+//     event.waitUntil(
+//       (async function () {
+//         const client = await self.clients.get(event.resultingClientId);
+//         const data = await event.request.formData();
+//         const files = data.get("file");
+//         client.postMessage({ files });
+//       })()
+//     );
+//     return;
+//   }
+// });
+
+self.addEventListener('fetch', event => {
+  if (event.request.method === 'POST' && event.request.url.endsWith('/share')) {
+    event.respondWith(handleShare(event));
   }
 });
+
+async function handleShare(event) {
+  const formData = await event.request.formData();
+  const file = formData.get('file');
+
+  // Use the Broadcast Channel API to send the file data to the client-side JavaScript
+  const channel = new BroadcastChannel('shareChannel');
+  channel.postMessage({ file });
+
+  // Respond with an empty 200 OK response
+  return new Response('', { status: 200 });
+}
