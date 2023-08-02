@@ -17,23 +17,23 @@
   // you may not be able to install the app. 
   "icons": [
     {
-      "src": "/img/icon-sm.png",
+      "src": "/DuoTone/img/icon-sm.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "/img/icon.png",
+      "src": "/DuoTone/img/icon.png",
       "type": "image/png",
       "sizes": "512x512"
     },
     {
-      "src": "/img/icon-sm-mask.png",
+      "src": "/DuoTone/img/icon-sm-mask.png",
       "type": "image/png",
       "sizes": "192x192",
       "purpose": "maskable"
     },
     {
-      "src": "/img/icon-mask.png",
+      "src": "/DuoTone/img/icon-mask.png",
       "type": "image/png",
       "sizes": "512x512",
       "purpose": "maskable"
