@@ -5,6 +5,7 @@ let noImage = true;
 // Function to handle image upload
 function handleImageUpload(event) {
   noImage = false;
+  document.getElementById("button-container").style.display = "flex";
   const file = event.target.files[0];
 
   originalImage.onload = function () {

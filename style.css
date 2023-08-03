@@ -6,6 +6,7 @@ body {
     align-items: flex-end;
     min-height: 100vh;
     background-color: #555;
+    user-select: none;
 }
 
 #image-container {
@@ -15,6 +16,10 @@ body {
     display: flex;
     justify-content: center;
     height: 100vh;
+}
+#lockscreen-filter,
+#original-image {
+  pointer-events: none;
 }
 
 .background-image {  margin: auto;
@@ -83,7 +88,7 @@ body {
 }
 
 .button {
-    backdrop-filter: blur(18px);
+    backdrop-filter: blur(15px);
     background-color: rgba(255, 255, 255, 0.35);
     border-radius: 10px;
     width: 100px;
@@ -132,7 +137,7 @@ body {
     padding: 20px;
     padding-bottom: 40px;
     box-sizing: border-box;
-    backdrop-filter: blur(28px) saturate(120%) contrast(60%);
+    backdrop-filter: blur(15px) saturate(120%) contrast(60%);
 }
 
 #colorSwitch-label {
