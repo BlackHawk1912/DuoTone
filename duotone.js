@@ -1,17 +1,14 @@
-// https://www.mattkandler.com/blog/duotone-image-filter-javascript-rails
-
 function Duotone(id, image, primaryClr, secondaryClr) {
-  console.log("called");
   let canvas = document.getElementById(id);
-  let ctx = canvas.getContext("2d");
+  let ctx = canvas.getContext("2d", { willReadFrequently: true });
 
   ctx.drawImage(image, 0, 0, canvas.width, canvas.height); // draws image to canvas
 
   // Convert to grayscale by averaging the values of each pixel
   const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  const pixels = this.grayscale(imageData.data);
-  const gradient = this.gradientMap(secondaryClr, primaryClr);
-  // let d = pixels;
+  const pixels = grayscale(imageData.data);
+  const gradient = gradientMap(secondaryClr, primaryClr);
+
   for (let i = 0; i < pixels.length; i += 4) {
     pixels[i] = gradient[pixels[i] * 4];
     pixels[i + 1] = gradient[pixels[i + 1] * 4 + 1];
@@ -46,25 +43,24 @@ function grayscale(pixels) {
   }
   return pixels;
 }
-function gradientMap(tone1, tone2) {
-  let rgb1 = hexToRgb(tone1);
-  let rgb2 = hexToRgb(tone2);
-  let gradient = [];
-  for (let i = 0; i < 256 * 4; i += 4) {
-    gradient[i] = ((256 - i / 4) * rgb1.r + (i / 4) * rgb2.r) / 256;
-    gradient[i + 1] = ((256 - i / 4) * rgb1.g + (i / 4) * rgb2.g) / 256;
-    gradient[i + 2] = ((256 - i / 4) * rgb1.b + (i / 4) * rgb2.b) / 256;
-    gradient[i + 3] = 255;
+
+function gradientMap(primaryClr, secondaryClr) {
+  const hexToRgb = (hex) => ({
+    r: parseInt(hex.slice(1, 3), 16),
+    g: parseInt(hex.slice(3, 5), 16),
+    b: parseInt(hex.slice(5, 7), 16),
+  });
+
+  const rgb1 = hexToRgb(primaryClr);
+  const rgb2 = hexToRgb(secondaryClr);
+
+  const gradient = new Uint8ClampedArray(256 * 4);
+  for (let i = 0; i < 256; i++) {
+    const factor = i / 255;
+    gradient[i * 4] = Math.round((1 - factor) * rgb1.r + factor * rgb2.r);
+    gradient[i * 4 + 1] = Math.round((1 - factor) * rgb1.g + factor * rgb2.g);
+    gradient[i * 4 + 2] = Math.round((1 - factor) * rgb1.b + factor * rgb2.b);
+    gradient[i * 4 + 3] = 255;
   }
   return gradient;
-}
-function hexToRgb(hex) {
-  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return result
-    ? {
-        r: parseInt(result[1], 16),
-        g: parseInt(result[2], 16),
-        b: parseInt(result[3], 16),
-      }
-    : null;
 }

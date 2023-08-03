@@ -24,8 +24,8 @@ function handleImageUpload(event) {
     Duotone(
       "duotoneCanvas",
       originalImage,
-      duotoneSwitches[5].color1,
-      duotoneSwitches[0].color2
+      document.getElementsByClassName("activeSwitch")[0].dataset.color1,
+      document.getElementsByClassName("activeSwitch")[0].dataset.color2
     );
   };
 
@@ -41,8 +41,8 @@ channel.onmessage = (event) => {
   Duotone(
     "duotoneCanvas",
     file,
-    duotoneSwitches[0].color1,
-    duotoneSwitches[0].color2
+    document.getElementsByClassName("activeSwitch")[0].dataset.color1,
+    document.getElementsByClassName("activeSwitch")[0].dataset.color2
   );
 };
 
@@ -55,42 +55,33 @@ document.getElementById("uploadButton").addEventListener("click", function () {
 });
 
 // Helper function to handle duotone switches
-function handleDuotoneSwitch(color1, color2) {
-  return function () {
-    // Remove 'activeSwitch' class from all switches
-    const switches = document.getElementsByClassName("colorSwitch");
-    for (const switchElement of switches) {
-      switchElement.classList.remove("activeSwitch");
-    }
+async function handleDuotoneSwitch() {
+  // Remove 'activeSwitch' class from all switches
+  const switches = document.getElementsByClassName("colorSwitch");
+  for (const switchElement of switches) {
+    switchElement.classList.remove("activeSwitch");
+  }
 
-    // Add 'activeSwitch' class to the clicked switch
-    this.classList.add("activeSwitch");
+  // Add 'activeSwitch' class to the clicked switch
+  this.classList.add("activeSwitch");
 
-    // Apply the duotone effect using the provided colors
-    Duotone("duotoneCanvas", originalImage, color1, color2);
-  };
+  // Get the color1 and color2 values from the data attributes
+  const color1 = this.dataset.color1;
+  const color2 = this.dataset.color2;
+
+  // Apply the duotone effect using the provided colors
+  Duotone("duotoneCanvas", originalImage, color1, color2);
 }
 
 // Set up event listeners for duotone switches
-const duotoneSwitches = [
-  { switchId: "switch-1", color1: "#29d8f7", color2: "#5b398f" },
-  { switchId: "switch-2", color1: "#6fa1fa", color2: "#702a58" },
-  { switchId: "switch-3", color1: "#d571f7", color2: "#3a439f" },
-  { switchId: "switch-4", color1: "#c05cf2", color2: "#2f3744" },
-  { switchId: "switch-5", color1: "#e86d99", color2: "#3d40a2" },
-  { switchId: "switch-6", color1: "#f25068", color2: "#5f1d65" },
-  { switchId: "switch-7", color1: "#eed27f", color2: "#4f355a" },
-  { switchId: "switch-8", color1: "#edc07d", color2: "#ad4e6c" },
-  { switchId: "switch-9", color1: "#eaa47f", color2: "#613184" },
-  { switchId: "switch-10", color1: "#f2ed9b", color2: "#8e3c75" },
-  { switchId: "switch-11", color1: "#d5dd78", color2: "#4b3b79" },
-  { switchId: "switch-12", color1: "#90cc5a", color2: "#2a4466" },
-];
+const switches = document.getElementsByClassName("colorSwitch");
+for (const switchElement of switches) {
+  switchElement.addEventListener("click", handleDuotoneSwitch);
 
-// Set up event listeners for duotone switches
-for (const { switchId, color1, color2 } of duotoneSwitches) {
-  const switchElement = document.getElementById(switchId);
-  switchElement.addEventListener("click", handleDuotoneSwitch(color1, color2));
+  // Set the initial background color using the data attributes
+  const color1 = switchElement.dataset.color1;
+  const color2 = switchElement.dataset.color2;
+  switchElement.style.backgroundColor = color1;
 }
 
 // Function to handle image download
