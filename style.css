@@ -33,6 +33,17 @@ body {
     bottom: 0;
 }
 
+.background-image.upload-icon {
+    font-size: 100px;
+    color: white;
+    opacity: 0.2;
+    display:flex;
+    align-items: flex-start;
+    justify-content: center;
+    height: 30%;
+    z-index: 0;
+}
+
 #lockscreen-filter.hide {
     animation: fadeaway 200ms;
     opacity: 0
@@ -54,7 +65,7 @@ body {
 }
 
 #duotoneCanvas {
-    z-index: 0;
+    z-index: 1;
 }
 #original-image {
     display: none;
