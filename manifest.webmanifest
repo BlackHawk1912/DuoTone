@@ -1,36 +1,24 @@
 {
   "short_name": "DuoTone",
+  "name": "DuoTone",
   "description": "Github Page as a Progressive Web App",
   "scope": "./",
   "start_url": "./",
-  "background_color": "#ffffff",
-  "theme_color": "#ff0000",
+  "background_color": "#555555",
+  "theme_color": "#555555",
   "display": "fullscreen",
-  // "display": "standalone",
   "icons": [
     {
       "src": "img/icon-sm.png",
       "type": "image/png",
       "sizes": "192x192",
-      "purpose": "any"
+      "purpose": "any monochrome maskable"
     },
     {
       "src": "img/icon.png",
       "type": "image/png",
       "sizes": "512x512",
-      "purpose": "any"
-    },
-    {
-      "src": "img/icon-sm-mask.png",
-      "type": "image/png",
-      "sizes": "192x192",
-      "purpose": "monochrome"
-    },
-    {
-      "src": "img/icon-mask.png",
-      "type": "image/png",
-      "sizes": "512x512",
-      "purpose": "monochrome"
+      "purpose": "any monochrome maskable"
     }
   ],
   "share_target": {
