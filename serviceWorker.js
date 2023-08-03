@@ -25,6 +25,11 @@ if (workbox.navigationPreload.isSupported()) {
   workbox.navigationPreload.enable();
 }
 
+workbox.routing.registerRoute(
+  ({ request }) => request.destination === "image",
+  new workbox.strategies.cacheFirst()
+);
+
 self.addEventListener("fetch", (event) => {
   if (event.request.mode === "navigate") {
     event.respondWith(
@@ -46,9 +51,9 @@ self.addEventListener("fetch", (event) => {
       })()
     );
   }
-};
+});
 
-  //handle image share receiver
+//handle image share receiver
 //   const url = new URL(event.request.url);
 //   if (
 //     event.request.method === "POST" &&
@@ -69,20 +74,12 @@ self.addEventListener("fetch", (event) => {
 //   }
 // });
 
-self.addEventListener('fetch', event => {
-  if (event.request.method === 'POST' && event.request.url.endsWith('/share')) {
+self.addEventListener("fetch", (event) => {
+  if (event.request.method === "POST" && event.request.url.endsWith("/share")) {
     event.respondWith(handleShare(event));
   }
 });
 
-async function handleShare(event) {
-  const formData = await event.request.formData();
-  const file = formData.get('file');
+import { registerRoute } from "workbox-routing";
 
-  // Use the Broadcast Channel API to send the file data to the client-side JavaScript
-  const channel = new BroadcastChannel('shareChannel');
-  channel.postMessage({ file });
-
-  // Respond with an empty 200 OK response
-  return new Response('', { status: 200 });
-}
+registerRoute("/share", handleImageUpload, "POST");
