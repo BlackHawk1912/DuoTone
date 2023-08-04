@@ -10,6 +10,7 @@ body {
         safe-area-inset-bottom,
         20px
         ) env(safe-area-inset-left, 20px);
+    -webkit-tap-highlight-color: transparent;
 }
 
 #image-container {
@@ -171,7 +172,6 @@ body {
 }
   
 .colorSwitch {
-    user-select: none;
     width: 32px;
     height: 32px;
     border-radius: 50%;
