@@ -150,13 +150,23 @@ body {
     box-sizing: border-box;
     backdrop-filter: blur(15px) saturate(120%) contrast(60%);
 }
+@media (prefers-color-scheme: light) {
+    #bottom-element {
+        background-color: rgba(255, 255, 255, 0.6);
+    }
+}
 
 #colorSwitch-label {
     color: white;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 20px;
 }
-
+@media (prefers-color-scheme: light) {
+    #colorSwitch-label {
+        color: black;
+    }
+}
+  
 .colorSwitch {
     width: 32px;
     height: 32px;
