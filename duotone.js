@@ -64,3 +64,32 @@ function gradientMap(primaryClr, secondaryClr) {
   }
   return gradient;
 }
+
+/* function triColorGradientMap(primaryClr, middleClr, secondaryClr) {
+  const hexToRgb = (hex) => ({
+    r: parseInt(hex.slice(1, 3), 16),
+    g: parseInt(hex.slice(3, 5), 16),
+    b: parseInt(hex.slice(5, 7), 16),
+  });
+
+  const rgb1 = hexToRgb(primaryClr);
+  const rgb2 = hexToRgb(middleClr);
+  const rgb3 = hexToRgb(secondaryClr);
+
+  const gradient = new Uint8ClampedArray(256 * 4);
+  for (let i = 0; i < 128; i++) {
+    const factor = i / 127;
+    gradient[i * 4] = Math.round((1 - factor) * rgb1.r + factor * rgb2.r);
+    gradient[i * 4 + 1] = Math.round((1 - factor) * rgb1.g + factor * rgb2.g);
+    gradient[i * 4 + 2] = Math.round((1 - factor) * rgb1.b + factor * rgb2.b);
+    gradient[i * 4 + 3] = 255;
+  }
+  for (let i = 128; i < 256; i++) {
+    const factor = (i - 128) / 127;
+    gradient[i * 4] = Math.round((1 - factor) * rgb2.r + factor * rgb3.r);
+    gradient[i * 4 + 1] = Math.round((1 - factor) * rgb2.g + factor * rgb3.g);
+    gradient[i * 4 + 2] = Math.round((1 - factor) * rgb2.b + factor * rgb3.b);
+    gradient[i * 4 + 3] = 255;
+  }
+  return gradient;
+} */
