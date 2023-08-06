@@ -26,27 +26,7 @@ if (workbox.navigationPreload.isSupported()) {
 }
 
 self.addEventListener("fetch", (event) => {
-  const url = new URL(event.request.url);
-  if (
-    event.request.method === "POST" &&
-    url.pathname === "/" &&
-    url.searchParams.has("share-target")
-  ) {
-    event.respondWith(Response.redirect("/?receiving-file-share=1"));
-
-    event.waitUntil(
-      (async function () {
-        const client = await self.clients.get(event.resultingClientId);
-        const data = await event.request.formData();
-        const files = data.get("file");
-        client.postMessage({ files });
-      })()
-    );
-    return;
-  }
-
   if (event.request.mode === "navigate") {
-    alert("event.request.mode === navigate");
     event.respondWith(
       (async () => {
         try {
@@ -65,45 +45,5 @@ self.addEventListener("fetch", (event) => {
         }
       })()
     );
-  } else if (
-    event.request.method === "POST" &&
-    event.request.url.endsWith("/receive-image")
-  ) {
-    alert("request.url.endsWith(/receive-image)")
-    event.respondWith(handleImageShare(event.request));
-  } else if (
-    event.request.method === "POST" &&
-    event.request.url.endsWith("./receive-image")
-  ) {
-    alert("request.url.endsWith(./receive-image)")
-    event.respondWith(handleImageShare(event.request));
   }
 });
-
-
-// Function to handle the image share and respond with a success message
-async function handleImageShare(request) {
-  alert("handleImageShare");
-
-  try {
-    const formData = await request.formData();
-    const image = formData.get("image");
-    // Here, you can process the received image if needed (e.g., save to a database, etc.)
-    return new Response("Image received successfully!", {
-      status: 200,
-      statusText: "OK",
-      headers: {
-        "Content-Type": "text/plain",
-      },
-    });
-  } catch (error) {
-    console.error("Error handling image share:", error);
-    return new Response("Error receiving the image.", {
-      status: 500,
-      statusText: "Internal Server Error",
-      headers: {
-        "Content-Type": "text/plain",
-      },
-    });
-  }
-}
