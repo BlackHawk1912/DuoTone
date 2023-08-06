@@ -3,10 +3,9 @@ let originalImage = new Image();
 let noImage = true;
 
 // Function to handle image upload
-function handleImageUpload(event) {
+function handleImageData(imageData) {
   noImage = false;
   document.getElementById("button-container").style.display = "flex";
-  const file = event.target.files[0];
 
   originalImage.onload = function () {
     const canvas = document.getElementById("duotoneCanvas");
@@ -30,9 +29,16 @@ function handleImageUpload(event) {
     );
   };
 
+  originalImage.src = imageData;
+}
+
+// Function to handle image upload
+function handleImageUpload(event) {
+  const file = event.target.files[0];
+
   if (file) {
     const objectURL = URL.createObjectURL(file);
-    originalImage.src = objectURL;
+    handleImageData(objectURL);
   }
 }
 
@@ -117,7 +123,7 @@ async function handleImage(event) {
   try {
     const imageData = await event.data.formData.get("image");
     if (imageData) {
-      displayImage(imageData);
+      handleImageData(imageData);
     }
   } catch (error) {
     console.error("Error handling received image:", error);
@@ -127,5 +133,5 @@ async function handleImage(event) {
 // Register the event listener for receiving the image from the service worker
 window.addEventListener("DOMContentLoaded", () => {
   navigator.shareTarget &&
-    navigator.shareTarget.addEventListener("file", handleImageShare);
+    navigator.shareTarget.addEventListener("file", handleImage);
 });
