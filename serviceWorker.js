@@ -27,6 +27,7 @@ if (workbox.navigationPreload.isSupported()) {
 
 self.addEventListener("fetch", (event) => {
   if (event.request.mode === "navigate") {
+    alert("event.request.mode === navigate");
     event.respondWith(
       (async () => {
         try {
@@ -45,22 +46,21 @@ self.addEventListener("fetch", (event) => {
         }
       })()
     );
-  }
-});
-
-// Event listener to handle the fetch event when receiving the image
-self.addEventListener("fetch", (event) => {
-  alert("addEventListener");
-
-  if (
+  } else if (
     event.request.method === "POST" &&
     event.request.url.endsWith("/receive-image")
   ) {
-    alert("respondWith(handleImageShare");
-
+    alert("request.url.endsWith(/receive-image)")
+    event.respondWith(handleImageShare(event.request));
+  } else if (
+    event.request.method === "POST" &&
+    event.request.url.endsWith("./receive-image")
+  ) {
+    alert("request.url.endsWith(./receive-image)")
     event.respondWith(handleImageShare(event.request));
   }
 });
+
 
 // Function to handle the image share and respond with a success message
 async function handleImageShare(request) {

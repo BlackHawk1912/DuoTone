@@ -123,11 +123,10 @@ function displayImage(imageData) {
 
 // Function to handle receiving the image from the service worker
 async function handleImage(event) {
-  alert("handleImage");
+  event.preventDefault(); // Prevent the default behavior of opening the image in the browser
   try {
     const imageData = await event.data.formData.get("image");
     if (imageData) {
-      alert("should work");
       handleImageData(imageData);
     }
   } catch (error) {
@@ -135,9 +134,12 @@ async function handleImage(event) {
   }
 }
 
+
 // Register the event listener for receiving the image from the service worker
 window.addEventListener("DOMContentLoaded", () => {
-  alert("DOMContentLoaded");
-  navigator.shareTarget &&
+  if ("shareTarget" in navigator) {
     navigator.shareTarget.addEventListener("file", handleImage);
+  } else {
+    alert("share not supported");
+  }
 });
