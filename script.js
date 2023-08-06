@@ -104,8 +104,28 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+function displayImage(imageData) {
+  const imageContainer = document.getElementById("test-image");
+  const image = new Image();
+  image.src = imageData;
+  imageContainer.innerHTML = "";
+  imageContainer.appendChild(image);
+}
+
+// Function to handle receiving the image from the service worker
+async function handleImage(event) {
+  try {
+    const imageData = await event.data.formData.get("image");
+    if (imageData) {
+      displayImage(imageData);
+    }
+  } catch (error) {
+    console.error("Error handling received image:", error);
+  }
+}
+
 // Register the event listener for receiving the image from the service worker
 window.addEventListener("DOMContentLoaded", () => {
   navigator.shareTarget &&
-    navigator.shareTarget.addEventListener("file", handleImageUpload);
+    navigator.shareTarget.addEventListener("file", handleImageShare);
 });
