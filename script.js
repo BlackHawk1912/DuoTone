@@ -115,3 +115,10 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
+
+navigator.serviceWorker.addEventListener("message", (event) => {
+  if (event.data.type === "imageFetched") {
+    // Call your handleImageUpload function with the received image blob
+    handleImageUpload(event.data.imageBlob);
+  }
+});

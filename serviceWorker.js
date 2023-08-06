@@ -52,12 +52,30 @@ self.addEventListener("fetch", (event) => {
     );
   }
 });
-
+  
 self.addEventListener("fetch", (event) => {
-  if (event.request.method === "POST" && event.request.url.endsWith("/share")) {
-    event.respondWith(handleShare(event));
+  // Intercept only fetch events for images
+  if (event.request.destination === "image") {
+    event.respondWith(handleImageFetch(event));
   }
 });
+
+async function handleImageFetch(event) {
+  const response = await fetch(event.request);
+  const blob = await response.blob();
+
+  // Send the image blob to the client
+  const clients = await self.clients.matchAll({ includeUncontrolled: true });
+  clients.forEach((client) => {
+    client.postMessage({
+      type: "imageFetched",
+      imageBlob: blob,
+    });
+  });
+
+  return response;
+}
+
 
 import { registerRoute } from "workbox-routing";
 
