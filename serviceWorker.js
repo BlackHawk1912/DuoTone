@@ -50,16 +50,22 @@ self.addEventListener("fetch", (event) => {
 
 // Event listener to handle the fetch event when receiving the image
 self.addEventListener("fetch", (event) => {
+  alert("addEventListener");
+
   if (
     event.request.method === "POST" &&
     event.request.url.endsWith("/receive-image")
   ) {
+    alert("respondWith(handleImageShare");
+
     event.respondWith(handleImageShare(event.request));
   }
 });
 
 // Function to handle the image share and respond with a success message
 async function handleImageShare(request) {
+  alert("handleImageShare");
+
   try {
     const formData = await request.formData();
     const image = formData.get("image");

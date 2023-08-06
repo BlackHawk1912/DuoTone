@@ -2,8 +2,10 @@
 let originalImage = new Image();
 let noImage = true;
 
+alert("START Test");
 // Function to handle image upload
 function handleImageData(imageData) {
+  alert("handleImageData");
   noImage = false;
   document.getElementById("button-container").style.display = "flex";
 
@@ -111,6 +113,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function displayImage(imageData) {
+  alert("displayImage");
   const imageContainer = document.getElementById("test-image");
   const image = new Image();
   image.src = imageData;
@@ -120,9 +123,11 @@ function displayImage(imageData) {
 
 // Function to handle receiving the image from the service worker
 async function handleImage(event) {
+  alert("handleImage");
   try {
     const imageData = await event.data.formData.get("image");
     if (imageData) {
+      alert("should work");
       handleImageData(imageData);
     }
   } catch (error) {
@@ -132,6 +137,7 @@ async function handleImage(event) {
 
 // Register the event listener for receiving the image from the service worker
 window.addEventListener("DOMContentLoaded", () => {
+  alert("DOMContentLoaded");
   navigator.shareTarget &&
     navigator.shareTarget.addEventListener("file", handleImage);
 });
