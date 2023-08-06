@@ -50,12 +50,8 @@ self.addEventListener("fetch", (event) => {
         }
       })()
     );
-  }
-});
-  
-self.addEventListener("fetch", (event) => {
-  // Intercept only fetch events for images
-  if (event.request.destination === "image") {
+  } else if (event.request.destination === "image") {
+    // Intercept only fetch events for images
     event.respondWith(handleImageFetch(event));
   }
 });
@@ -76,7 +72,66 @@ async function handleImageFetch(event) {
   return response;
 }
 
-
 import { registerRoute } from "workbox-routing";
 
-registerRoute("/share", handleImageUpload, "POST");
+registerRoute("/share-file-handler", handleImageUpload, "POST");
+
+async function handleImageUpload({ event }) {
+  noImage = false;
+  document.getElementById("button-container").style.display = "flex";
+  const file = event.target.files[0];
+
+  originalImage.onload = function () {
+    const canvas = document.getElementById("duotoneCanvas");
+    canvas.width = originalImage.width;
+    canvas.height = originalImage.height;
+
+    const originalCanvas = document.getElementById("original-image");
+    originalCanvas.width = originalImage.width;
+    originalCanvas.height = originalImage.height;
+
+    // Save the original image in the "originalImage" object
+    originalCanvas.getContext("2d").drawImage(originalImage, 0, 0);
+
+    // Apply the duotone effect to the "duotoneCanvas"
+    Duotone(
+      "duotoneCanvas",
+      originalImage,
+      document.getElementsByClassName("activeSwitch")[0].dataset.color1,
+      document.getElementsByClassName("activeSwitch")[0].dataset.color2,
+      document.getElementsByClassName("activeSwitch")[0].dataset.color3
+    );
+  };
+
+  if (file) {
+    const objectURL = URL.createObjectURL(file);
+    originalImage.src = objectURL;
+  }
+}
+
+importScripts: ["sw-next-message.js"],
+          runtimeCaching: [
+            {
+              handler: ({ event }) => {
+                const dataPromise = event.request.formData();
+                event.waitUntil(
+                  (async function () {
+                    // defined in sw-next-message.js
+                    await nextMessage("share-ready");
+                    const client = await self.clients.get(
+                      event.resultingClientId
+                    );
+
+                    const formData = await dataPromise;
+                    client.postMessage({
+                      images: formData.getAll("images") || [],
+                      uri: "/share",
+                    });
+                  })()
+                );
+                return Response.redirect("/share");
+              },
+              urlPattern: "/share",
+              method: "POST",
+            },
+          ],
