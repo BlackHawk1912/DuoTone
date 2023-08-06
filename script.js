@@ -35,18 +35,6 @@ function handleImageUpload(event) {
     originalImage.src = objectURL;
   }
 }
-// Listen for messages from the service worker
-const channel = new BroadcastChannel("shareChannel");
-channel.onmessage = (event) => {
-  const file = event.data.file;
-  Duotone(
-    "duotoneCanvas",
-    file,
-    document.getElementsByClassName("activeSwitch")[0].dataset.color1,
-    document.getElementsByClassName("activeSwitch")[0].dataset.color2,
-    document.getElementsByClassName("activeSwitch")[0].dataset.color3
-  );
-};
 
 document.getElementById("uploadButton").addEventListener("click", function () {
   const fileInput = document.createElement("input");
@@ -116,9 +104,8 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-navigator.serviceWorker.addEventListener("message", (event) => {
-  if (event.data.type === "imageFetched") {
-    // Call your handleImageUpload function with the received image blob
-    handleImageUpload(event.data.imageBlob);
-  }
+// Register the event listener for receiving the image from the service worker
+window.addEventListener("DOMContentLoaded", () => {
+  navigator.shareTarget &&
+    navigator.shareTarget.addEventListener("file", handleImageUpload);
 });

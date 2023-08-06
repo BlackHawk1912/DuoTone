@@ -25,11 +25,6 @@ if (workbox.navigationPreload.isSupported()) {
   workbox.navigationPreload.enable();
 }
 
-workbox.routing.registerRoute(
-  ({ request }) => request.destination === "image",
-  new workbox.strategies.cacheFirst()
-);
-
 self.addEventListener("fetch", (event) => {
   if (event.request.mode === "navigate") {
     event.respondWith(
@@ -52,30 +47,38 @@ self.addEventListener("fetch", (event) => {
     );
   }
 });
+
+// Event listener to handle the fetch event when receiving the image
 self.addEventListener("fetch", (event) => {
-  // Intercept only fetch events for images
-  if (event.request.destination === "image") {
-    event.respondWith(handleImageFetch(event));
+  if (
+    event.request.method === "POST" &&
+    event.request.url.endsWith("/receive-image")
+  ) {
+    event.respondWith(handleImageShare(event.request));
   }
 });
 
-async function handleImageFetch(event) {
-  const response = await fetch(event.request);
-  const blob = await response.blob();
-
-  // Send the image blob to the client
-  const clients = await self.clients.matchAll({ includeUncontrolled: true });
-  clients.forEach((client) => {
-    client.postMessage({
-      type: "imageFetched",
-      imageBlob: blob,
+// Function to handle the image share and respond with a success message
+async function handleImageShare(request) {
+  try {
+    const formData = await request.formData();
+    const image = formData.get("image");
+    // Here, you can process the received image if needed (e.g., save to a database, etc.)
+    return new Response("Image received successfully!", {
+      status: 200,
+      statusText: "OK",
+      headers: {
+        "Content-Type": "text/plain",
+      },
     });
-  });
-
-  return response;
+  } catch (error) {
+    console.error("Error handling image share:", error);
+    return new Response("Error receiving the image.", {
+      status: 500,
+      statusText: "Internal Server Error",
+      headers: {
+        "Content-Type": "text/plain",
+      },
+    });
+  }
 }
-
-
-import { registerRoute } from "workbox-routing";
-
-registerRoute("/share", handleImageUpload, "POST");
