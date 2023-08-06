@@ -103,7 +103,7 @@ body {
 }
 
 .button {
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(33px);
     background-color: rgba(255, 255, 255, 0.35);
     border-radius: 10px;
     width: 100px;
@@ -150,14 +150,13 @@ body {
     border-top-left-radius: 33px;
     border-top-right-radius: 33px;
     padding: 20px;
-    padding-bottom: 40px;
     box-sizing: border-box;
-    backdrop-filter: blur(20px) saturate(100%) contrast(60%);
+    backdrop-filter: blur(33px) saturate(100%) contrast(60%);
 }
 @media (prefers-color-scheme: light) {
     #bottom-element {
         background-color: rgba(255, 255, 255, 0.6);
-        backdrop-filter: blur(20px) saturate(120%) contrast(60%);
+        backdrop-filter: blur(33px) saturate(120%) contrast(60%);
     }
 }
 

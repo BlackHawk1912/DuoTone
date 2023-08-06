@@ -25,7 +25,8 @@ function handleImageUpload(event) {
       "duotoneCanvas",
       originalImage,
       document.getElementsByClassName("activeSwitch")[0].dataset.color1,
-      document.getElementsByClassName("activeSwitch")[0].dataset.color2
+      document.getElementsByClassName("activeSwitch")[0].dataset.color2,
+      document.getElementsByClassName("activeSwitch")[0].dataset.color3
     );
   };
 
@@ -42,7 +43,8 @@ channel.onmessage = (event) => {
     "duotoneCanvas",
     file,
     document.getElementsByClassName("activeSwitch")[0].dataset.color1,
-    document.getElementsByClassName("activeSwitch")[0].dataset.color2
+    document.getElementsByClassName("activeSwitch")[0].dataset.color2,
+    document.getElementsByClassName("activeSwitch")[0].dataset.color3
   );
 };
 
@@ -68,9 +70,10 @@ async function handleDuotoneSwitch() {
   // Get the color1 and color2 values from the data attributes
   const color1 = this.dataset.color1;
   const color2 = this.dataset.color2;
+  const color3 = this.dataset.color3;
 
   // Apply the duotone effect using the provided colors
-  Duotone("duotoneCanvas", originalImage, color1, color2);
+  Duotone("duotoneCanvas", originalImage, color1, color2, color3);
 }
 
 // Set up event listeners for duotone switches
@@ -80,7 +83,7 @@ for (const switchElement of switches) {
 
   // Set the initial background color using the data attributes
   const color1 = switchElement.dataset.color1;
-  const color2 = switchElement.dataset.color2;
+  // const color2 = switchElement.dataset.color2;
   switchElement.style.backgroundColor = color1;
 }
 
