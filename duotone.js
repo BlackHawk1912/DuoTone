@@ -1,7 +1,7 @@
 function Duotone(id, image, primaryClr, middleClr, secondaryClr) {
   let canvas = document.getElementById(id);
   let ctx = canvas.getContext("2d", { willReadFrequently: true });
-  ctx.filter = "grayscale(1) brightness(1) contrast(1)";
+  ctx.filter = "grayscale(1) brightness(0.9) contrast(1.3)";
 
   ctx.drawImage(image, 0, 0, canvas.width, canvas.height); // draws image to canvas
 
