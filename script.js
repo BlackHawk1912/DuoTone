@@ -33,6 +33,11 @@ function handleImageData(imageData) {
   originalImage.src = imageData;
 }
 
+// Function to handle shared images
+function handleImageShare(imageBlob) {
+  alert(imageBlob)
+}
+
 // Function to handle image upload
 function handleImageUpload(event) {
   const file = event.target.files[0];
@@ -113,30 +118,4 @@ document.addEventListener("DOMContentLoaded", function () {
       document.getElementById("button-container").classList.toggle("hide");
     }
   });
-});
-
-// function displayImage(imageData) {
-//   const imageContainer = document.getElementById("test-image");
-//   const image = new Image();
-//   image.src = imageData;
-//   imageContainer.innerHTML = "";
-//   imageContainer.appendChild(image);
-// }
-
-// Function to handle receiving the image from the service worker
-async function handleImage(event) {
-  try {
-    const imageData = await event.data.formData.get("image");
-    if (imageData) {
-      handleImageData(imageData);
-    }
-  } catch (error) {
-    console.error("Error handling received image:", error);
-  }
-}
-
-// Register the event listener for receiving the image from the service worker
-window.addEventListener("DOMContentLoaded", () => {
-  navigator.shareTarget &&
-    navigator.shareTarget.addEventListener("file", handleImage);
 });

@@ -38,6 +38,7 @@
         width="0"
         height="0"
       ></canvas>
+      <img id="image" alt="">
       <i class="background-image upload-icon fa-solid fa-arrow-up-from-bracket"></i>
     </div>
 
@@ -62,18 +63,23 @@
       </div>
     </div>
     <script>
-      if (navigator.serviceWorker) {
-        navigator.serviceWorker.register("/DuoTone/serviceWorker.js", {
-          scope: "/DuoTone/",
-        });
-        navigator.serviceWorker.addEventListener('message', function (e) {
-            if (searchParams.has('receiving-file-share')) {
-                alert(e.data.files); //contains the file(s)
-            }
-        });
-      }
-      
+        if (navigator.serviceWorker) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('./sw.js', {
+                    scope: './'
+                });
 
+                navigator.serviceWorker.onmessage = function(event) {
+                  alert("onmessage reached")
+                  const file = event.data.file;
+                  if (file) {
+                    const objectURL = URL.createObjectURL(file);
+                    handleImageData(objectURL);
+                    currentFilesName = file.name;
+                  }
+                };
+            });
+        }
     </script>
     <script src="duotone.js"></script>
     <script src="script.js"></script>

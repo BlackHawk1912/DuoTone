@@ -4,8 +4,6 @@ importScripts(
   "https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js"
 );
 
-const CACHE = "pwabuilder-page";
-
 // TODO: replace the following with the correct offline fallback page i.e.: const offlineFallbackPage = "offline.html";
 const offlineFallbackPage = "index.html";
 
@@ -15,35 +13,69 @@ self.addEventListener("message", (event) => {
   }
 });
 
-self.addEventListener("install", async (event) => {
-  event.waitUntil(
-    caches.open(CACHE).then((cache) => cache.add(offlineFallbackPage))
-  );
-});
+// const CACHE = "pwabuilder-page";
 
-if (workbox.navigationPreload.isSupported()) {
-  workbox.navigationPreload.enable();
-}
+// self.addEventListener("install", async (event) => {
+//   event.waitUntil(
+//     caches.open(CACHE).then((cache) => cache.add(offlineFallbackPage))
+//   );
+// });
 
-self.addEventListener("fetch", (event) => {
-  if (event.request.mode === "navigate") {
-    event.respondWith(
-      (async () => {
-        try {
-          const preloadResp = await event.preloadResponse;
+// if (workbox.navigationPreload.isSupported()) {
+//   workbox.navigationPreload.enable();
+// }
 
-          if (preloadResp) {
-            return preloadResp;
-          }
+// self.addEventListener("fetch", (event) => {
+//   if (event.request.mode === "navigate") {
+//     event.respondWith(
+//       (async () => {
+//         try {
+//           const preloadResp = await event.preloadResponse;
 
-          const networkResp = await fetch(event.request);
-          return networkResp;
-        } catch (error) {
-          const cache = await caches.open(CACHE);
-          const cachedResp = await cache.match(offlineFallbackPage);
-          return cachedResp;
-        }
-      })()
-    );
+//           if (preloadResp) {
+//             return preloadResp;
+//           }
+
+//           const networkResp = await fetch(event.request);
+//           return networkResp;
+//         } catch (error) {
+//           const cache = await caches.open(CACHE);
+//           const cachedResp = await cache.match(offlineFallbackPage);
+//           return cachedResp;
+//         }
+//       })()
+//     );
+//   }
+// });
+
+
+addEventListener("fetch", (event) => {
+  alert("service worker reached");
+  if (event.request.method !== "POST") {
+    return;
   }
+
+  if (
+    event.request.url.startsWith(
+      "https://blackhawk1912.github.io/DuoTone/upload"
+    ) === false
+  ) {
+    return;
+  }
+
+  event.respondWith(
+    Response.redirect("https://blackhawk1912.github.io/DuoTone/output.html")
+  );
+  event.waitUntil(
+    (async function () {
+      alert("async function reached");
+      const data = await event.request.formData();
+      const client = await self.clients.get(
+        event.resultingClientId || event.clientId
+      );
+
+      const file = data.get("file");
+      client.postMessage({ file, action: "load-image" });
+    })()
+  );
 });

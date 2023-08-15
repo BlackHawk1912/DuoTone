@@ -3,7 +3,7 @@
   "name": "DuoTone",
   "description": "Github Page as a Progressive Web App",
   "scope": "./",
-  "start_url": "./",
+  "start_url": "./index.html",
   "background_color": "#555555",
   "theme_color": "#ffffff",
   "display": "fullscreen",
@@ -22,13 +22,13 @@
     }
   ],
   "share_target": {
-    "action": "./receive-image",
+    "action": "./upload",
     "method": "POST",
     "enctype": "multipart/form-data",
     "params": {
       "files": [
         {
-          "name": "image",
+          "name": "file",
           "accept": ["image/*"]
         }
       ]
