@@ -1,6 +1,7 @@
 // Define the original image as a global variable
 let originalImage = new Image();
 let noImage = true;
+let currentFilesName = "";
 
 // Function to handle image upload
 function handleImageData(imageData) {
@@ -39,6 +40,7 @@ function handleImageUpload(event) {
   if (file) {
     const objectURL = URL.createObjectURL(file);
     handleImageData(objectURL);
+    currentFilesName = file.name;
   }
 }
 
@@ -89,7 +91,10 @@ document
     const image = canvas.toDataURL("image/png");
     const anchor = document.createElement("a");
     anchor.href = image;
-    anchor.download = "duotone_image.png";
+    var parts = currentFilesName.split(".");
+    var fileExtension = parts.pop();
+    var newFilename = parts.join(".") + "_duotone." + fileExtension;
+    anchor.download = newFilename;
     anchor.click();
   });
 
