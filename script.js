@@ -110,13 +110,13 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-function displayImage(imageData) {
-  const imageContainer = document.getElementById("test-image");
-  const image = new Image();
-  image.src = imageData;
-  imageContainer.innerHTML = "";
-  imageContainer.appendChild(image);
-}
+// function displayImage(imageData) {
+//   const imageContainer = document.getElementById("test-image");
+//   const image = new Image();
+//   image.src = imageData;
+//   imageContainer.innerHTML = "";
+//   imageContainer.appendChild(image);
+// }
 
 // Function to handle receiving the image from the service worker
 async function handleImage(event) {
