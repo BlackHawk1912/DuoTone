@@ -70,6 +70,7 @@ body {
 
 #duotoneCanvas {
     z-index: 1;
+    user-select: all;
 }
 #original-image {
     display: none;
