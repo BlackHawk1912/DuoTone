@@ -40,24 +40,47 @@
 
     <div id="bottom-element">
       <div id="colorSwitch-label">Stilfarbe</div>
-      <div class="colorSwitch-container">
-        <div class="colorSwitch activeSwitch" id="switch-1" data-color1="#26d3f1" data-color2="#58A0DB" data-color3="#5D007F"></div>
-        <div class="colorSwitch" id="switch-2" data-color1="#6c9ef3" data-color2="#7682cc" data-color3="#640032"></div>
-        <div class="colorSwitch" id="switch-3" data-color1="#d06ff4" data-color2="#ae63dc" data-color3="#01308a"></div>
-
-        <div class="colorSwitch" id="switch-4" data-color1="#be5af0" data-color2="#9a54c6" data-color3="#002921"></div>
-        <div class="colorSwitch" id="switch-5" data-color1="#e56a96" data-color2="#BF5695" data-color3="#3e0053"></div>
-        <div class="colorSwitch" id="switch-6" data-color1="#ee4e66" data-color2="#c94b63" data-color3="#242754"></div>
-
-        <div class="colorSwitch" id="switch-7" data-color1="#e59f7b" data-color2="#c2867e" data-color3="#42007c"></div>
-        <div class="colorSwitch" id="switch-8" data-color1="#e8bb78" data-color2="#da9f75" data-color3="#99265f"></div>
-        <div class="colorSwitch" id="switch-9" data-color1="#e7ca7a" data-color2="#c6b57d" data-color3="#326384"></div>
-
-        <div class="colorSwitch" id="switch-10" data-color1="#ece795" data-color2="#d2bc8a" data-color3="#6a0065"></div>
-        <div class="colorSwitch" id="switch-11" data-color1="#ced671" data-color2="#abaf74" data-color3="#330076"></div>
-        <div class="colorSwitch" id="switch-12" data-color1="#8dc757" data-color2="#69A764" data-color3="#131070"></div>
-      </div>
+      <form class="colorSwitch-container" for="colorSwitch">
+        <input type="radio" name="colorSwitch" id="colorSwitch1" value="1" data-color1="#26d3f1" data-color2="#58A0DB" data-color3="#5D007F" checked>
+        <label class="colorSwitch" id="switch-1-label" for="colorSwitch1"></label>
+      
+        <input type="radio" name="colorSwitch" id="colorSwitch2" value="2" data-color1="#6c9ef3" data-color2="#7682cc" data-color3="#640032">
+        <label class="colorSwitch" id="switch-2-label" for="colorSwitch2"></label>
+      
+        <input type="radio" name="colorSwitch" id="colorSwitch3" value="3" data-color1="#d06ff4" data-color2="#ae63dc" data-color3="#01308a">
+        <label class="colorSwitch" id="switch-3-label" for="colorSwitch3"></label>
+      
+        <input type="radio" name="colorSwitch" id="colorSwitch4" value="4" data-color1="#be5af0" data-color2="#9a54c6" data-color3="#002921">
+        <label class="colorSwitch" id="switch-4-label" for="colorSwitch4"></label>
+      
+        <input type="radio" name="colorSwitch" id="colorSwitch5" value="5" data-color1="#e56a96" data-color2="#BF5695" data-color3="#3e0053">
+        <label class="colorSwitch" id="switch-5-label" for="colorSwitch5"></label>
+      
+        <input type="radio" name="colorSwitch" id="colorSwitch6" value="6" data-color1="#ee4e66" data-color2="#c94b63" data-color3="#242754">
+        <label class="colorSwitch" id="switch-6-label" for="colorSwitch6"></label>
+      
+        <input type="radio" name="colorSwitch" id="colorSwitch7" value="7" data-color1="#e59f7b" data-color2="#c2867e" data-color3="#42007c">
+        <label class="colorSwitch" id="switch-7-label" for="colorSwitch7"></label>
+      
+        <input type="radio" name="colorSwitch" id="colorSwitch8" value="8" data-color1="#e8bb78" data-color2="#da9f75" data-color3="#99265f">
+        <label class="colorSwitch" id="switch-8-label" for="colorSwitch8"></label>
+      
+        <input type="radio" name="colorSwitch" id="colorSwitch9" value="9" data-color1="#e7ca7a" data-color2="#c6b57d" data-color3="#326384">
+        <label class="colorSwitch" id="switch-9-label" for="colorSwitch9"></label>
+      
+        <input type="radio" name="colorSwitch" id="colorSwitch10" value="10" data-color1="#ece795" data-color2="#d2bc8a" data-color3="#6a0065">
+        <label class="colorSwitch" id="switch-10-label" for="colorSwitch10"></label>
+      
+        <input type="radio" name="colorSwitch" id="colorSwitch11" value="11" data-color1="#ced671" data-color2="#abaf74" data-color3="#330076">
+        <label class="colorSwitch" id="switch-11-label" for="colorSwitch11"></label>
+      
+        <input type="radio" name="colorSwitch" id="colorSwitch12" value="12" data-color1="#8dc757" data-color2="#69A764" data-color3="#131070">
+        <label class="colorSwitch" id="switch-12-label" for="colorSwitch12"></label>
+      </form>
+      
     </div>
+    
+
     <script>
         if (navigator.serviceWorker) {
             window.addEventListener('load', function() {

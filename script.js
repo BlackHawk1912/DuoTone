@@ -18,16 +18,18 @@ function handleImageData(imageData) {
     Duotone(
       "duotoneCanvas",
       originalImage,
-      document.getElementsByClassName("activeSwitch")[0].dataset.color1,
-      document.getElementsByClassName("activeSwitch")[0].dataset.color2,
-      document.getElementsByClassName("activeSwitch")[0].dataset.color3
+      document.querySelector('input[name="colorSwitch"]:checked').dataset
+        .color1,
+      document.querySelector('input[name="colorSwitch"]:checked').dataset
+        .color2,
+      document.querySelector('input[name="colorSwitch"]:checked').dataset.color3
     );
   };
 }
 
 function debugPrint(description, message) {
   var debugWindow = document.getElementById("debug-window");
-  debugWindow.innerHTML += `${description}: ${message}<br>`;  
+  debugWindow.innerHTML += `${description}: ${message}<br>`;
 }
 
 // Function to handle image upload
@@ -89,33 +91,32 @@ async function compressImage(imageDataUrl, quality) {
   });
 }
 
-
 // Helper function to handle color switches
 async function handleDuotoneSwitch() {
-  // Remove 'activeSwitch' class from all switches
-  const switches = document.getElementsByClassName("colorSwitch");
-  for (const switchElement of switches) {
-    switchElement.classList.remove("activeSwitch");
-  }
-
-  this.classList.add("activeSwitch");
-
   // Apply the duotone effect using the provided colors
+  if (noImage) {
+    return;
+  }
+  const selectedRadioButton = this.previousElementSibling;
   Duotone(
     "duotoneCanvas",
     originalImage,
-    this.dataset.color1,
-    this.dataset.color2,
-    this.dataset.color3
+    selectedRadioButton.dataset.color1,
+    selectedRadioButton.dataset.color2,
+    selectedRadioButton.dataset.color3
   );
 }
 
 // Set up event listeners for color switches
-const switches = document.getElementsByClassName("colorSwitch");
-for (const switchElement of switches) {
-  switchElement.addEventListener("click", handleDuotoneSwitch);
-  switchElement.style.backgroundColor = switchElement.dataset.color1;
+const radioButtons = document.querySelectorAll(
+  ".colorSwitch-container input[type='radio']"
+);
+for (const radioButton of radioButtons) {
+  radioButton.nextElementSibling.addEventListener("click", handleDuotoneSwitch);
+  radioButton.nextElementSibling.style.backgroundColor =
+    radioButton.dataset.color1;
 }
+
 
 document.addEventListener("DOMContentLoaded", function () {
   const imageContainer = document.getElementById("image-container");
