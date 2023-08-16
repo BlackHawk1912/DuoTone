@@ -33,9 +33,11 @@ function handleImageData(imageData) {
   originalImage.src = imageData;
 }
 
-// Function to handle shared images
-function handleImageShare(imageBlob) {
-  alert(imageBlob)
+function debugPrint(description, message) {
+  document.getElementById("debug-window").innerHTML += description;
+  document.getElementById("debug-window").innerHTML += ": ";
+  document.getElementById("debug-window").innerHTML += message;
+  document.getElementById("debug-window").innerHTML += "<br>";
 }
 
 // Function to handle image upload
@@ -65,27 +67,23 @@ async function handleDuotoneSwitch() {
     switchElement.classList.remove("activeSwitch");
   }
 
-  // Add 'activeSwitch' class to the clicked switch
   this.classList.add("activeSwitch");
 
-  // Get the color1 and color2 values from the data attributes
-  const color1 = this.dataset.color1;
-  const color2 = this.dataset.color2;
-  const color3 = this.dataset.color3;
-
   // Apply the duotone effect using the provided colors
-  Duotone("duotoneCanvas", originalImage, color1, color2, color3);
+  Duotone(
+    "duotoneCanvas",
+    originalImage,
+    this.dataset.color1,
+    this.dataset.color2,
+    this.dataset.color3
+  );
 }
 
-// Set up event listeners for duotone switches
+// Set up event listeners for color switches
 const switches = document.getElementsByClassName("colorSwitch");
 for (const switchElement of switches) {
   switchElement.addEventListener("click", handleDuotoneSwitch);
-
-  // Set the initial background color using the data attributes
-  const color1 = switchElement.dataset.color1;
-  // const color2 = switchElement.dataset.color2;
-  switchElement.style.backgroundColor = color1;
+  switchElement.style.backgroundColor = switchElement.dataset.color1;
 }
 
 // Function to handle image download
@@ -94,6 +92,7 @@ document
   .addEventListener("click", function () {
     const canvas = document.getElementById("duotoneCanvas");
     const image = canvas.toDataURL("image/png");
+    // TODO image compression
     const anchor = document.createElement("a");
     anchor.href = image;
     var parts = currentFilesName.split(".");

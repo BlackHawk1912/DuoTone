@@ -14,6 +14,9 @@
     />
   </head>
   <body>
+    <div id="debug-window" style="display: none; position: absolute; width: 400px; height: auto; background: rgba(255,255,255,0.3); top: 0; left: 0; padding: 20px; margin: 100px 20px; z-index: 100;">
+      <h3>Debug:</h3><br>
+    </div>
     <div id="button-container" style="display: none;">
       <div class="button plus-symbol" id="uploadButton">
         <i class="fa-regular fa-plus"></i>
@@ -24,7 +27,6 @@
     </div>
 
     <div id="image-container">
-      <!-- <img class="background-image" src="background.jpg" alt="Background Image"> -->
       <img class="hide" id="lockscreen-filter" src="lockscreen.png" alt="Background Image" />
       <canvas
         class="background-image"
@@ -70,7 +72,6 @@
                 });
 
                 navigator.serviceWorker.onmessage = function(event) {
-                  alert("onmessage reached")
                   const file = event.data.file;
                   if (file) {
                     const objectURL = URL.createObjectURL(file);
