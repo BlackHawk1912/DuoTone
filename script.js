@@ -13,13 +13,6 @@ function handleImageData(imageData) {
     canvas.width = originalImage.width;
     canvas.height = originalImage.height;
 
-    const originalCanvas = document.getElementById("original-image");
-    originalCanvas.width = originalImage.width;
-    originalCanvas.height = originalImage.height;
-
-    // Save the original image in the "originalImage" object
-    originalCanvas.getContext("2d").drawImage(originalImage, 0, 0);
-
     // Apply the duotone effect to the "duotoneCanvas"
     Duotone(
       "duotoneCanvas",
