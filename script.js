@@ -47,21 +47,48 @@ document.getElementById("uploadButton").addEventListener("click", function () {
   fileInput.click();
 });
 
-// Function to handle image download
 document
   .getElementById("downloadButton")
-  .addEventListener("click", function () {
+  .addEventListener("click", async function () {
     const canvas = document.getElementById("duotoneCanvas");
-    const image = canvas.toDataURL("image/png");
-    // TODO image compression
+    const image = canvas.toDataURL("image/jpeg", 1.0); // Convert to JPEG format
+
+    // Compress the image using a canvas and Blob
+    const compressedImage = await compressImage(image, 0.8); // Adjust quality as needed
+
     const anchor = document.createElement("a");
-    anchor.href = image;
+    anchor.href = compressedImage;
+
     var parts = currentFilesName.split(".");
     var fileExtension = parts.pop();
     var newFilename = parts.join(".") + "_duotone." + fileExtension;
     anchor.download = newFilename;
     anchor.click();
   });
+
+async function compressImage(imageDataUrl, quality) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = function () {
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0);
+
+      canvas.toBlob(
+        (blob) => {
+          const compressedImageUrl = URL.createObjectURL(blob);
+          resolve(compressedImageUrl);
+        },
+        "image/jpeg",
+        quality
+      );
+    };
+    img.src = imageDataUrl;
+  });
+}
+
 
 // Helper function to handle color switches
 async function handleDuotoneSwitch() {
