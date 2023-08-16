@@ -7,6 +7,7 @@ let currentFilesName = "";
 function handleImageData(imageData) {
   noImage = false;
   document.getElementById("button-container").style.display = "flex";
+  originalImage.src = imageData;
 
   originalImage.onload = function () {
     const canvas = document.getElementById("duotoneCanvas");
@@ -22,37 +23,47 @@ function handleImageData(imageData) {
       document.getElementsByClassName("activeSwitch")[0].dataset.color3
     );
   };
-
-  originalImage.src = imageData;
 }
 
 function debugPrint(description, message) {
-  document.getElementById("debug-window").innerHTML += description;
-  document.getElementById("debug-window").innerHTML += ": ";
-  document.getElementById("debug-window").innerHTML += message;
-  document.getElementById("debug-window").innerHTML += "<br>";
+  var debugWindow = document.getElementById("debug-window");
+  debugWindow.innerHTML += `${description}: ${message}<br>`;  
 }
 
 // Function to handle image upload
-function handleImageUpload(event) {
-  const file = event.target.files[0];
-
-  if (file) {
-    const objectURL = URL.createObjectURL(file);
-    handleImageData(objectURL);
-    currentFilesName = file.name;
-  }
-}
-
 document.getElementById("uploadButton").addEventListener("click", function () {
   const fileInput = document.createElement("input");
   fileInput.type = "file";
   fileInput.accept = "image/*";
-  fileInput.addEventListener("change", handleImageUpload);
+  fileInput.addEventListener("change", function (event) {
+    const file = event.target.files[0];
+
+    if (file) {
+      const objectURL = URL.createObjectURL(file);
+      handleImageData(objectURL);
+      currentFilesName = file.name;
+    }
+  });
   fileInput.click();
 });
 
-// Helper function to handle duotone switches
+// Function to handle image download
+document
+  .getElementById("downloadButton")
+  .addEventListener("click", function () {
+    const canvas = document.getElementById("duotoneCanvas");
+    const image = canvas.toDataURL("image/png");
+    // TODO image compression
+    const anchor = document.createElement("a");
+    anchor.href = image;
+    var parts = currentFilesName.split(".");
+    var fileExtension = parts.pop();
+    var newFilename = parts.join(".") + "_duotone." + fileExtension;
+    anchor.download = newFilename;
+    anchor.click();
+  });
+
+// Helper function to handle color switches
 async function handleDuotoneSwitch() {
   // Remove 'activeSwitch' class from all switches
   const switches = document.getElementsByClassName("colorSwitch");
@@ -79,24 +90,7 @@ for (const switchElement of switches) {
   switchElement.style.backgroundColor = switchElement.dataset.color1;
 }
 
-// Function to handle image download
-document
-  .getElementById("downloadButton")
-  .addEventListener("click", function () {
-    const canvas = document.getElementById("duotoneCanvas");
-    const image = canvas.toDataURL("image/png");
-    // TODO image compression
-    const anchor = document.createElement("a");
-    anchor.href = image;
-    var parts = currentFilesName.split(".");
-    var fileExtension = parts.pop();
-    var newFilename = parts.join(".") + "_duotone." + fileExtension;
-    anchor.download = newFilename;
-    anchor.click();
-  });
-
 document.addEventListener("DOMContentLoaded", function () {
-  const lockscreenFilter = document.getElementById("lockscreen-filter");
   const imageContainer = document.getElementById("image-container");
   // const buttonContainer = document.getElementById("button-container");
   // const bottomElement = document.getElementById("bottom-element");
