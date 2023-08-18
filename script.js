@@ -98,13 +98,20 @@ async function handleDuotoneSwitch() {
     return;
   }
   const selectedRadioButton = this.previousElementSibling;
-  Duotone(
-    "duotoneCanvas",
-    originalImage,
-    selectedRadioButton.dataset.color1,
-    selectedRadioButton.dataset.color2,
-    selectedRadioButton.dataset.color3
-  );
+
+  // Update the UI first
+  selectedRadioButton.checked = true;
+
+  // Use setTimeout to allow the UI to update before starting the long-running operation
+  setTimeout(async () => {
+    await Duotone(
+      "duotoneCanvas",
+      originalImage,
+      selectedRadioButton.dataset.color1,
+      selectedRadioButton.dataset.color2,
+      selectedRadioButton.dataset.color3
+    );
+  }, 0); // The 0 delay is enough to allow the rendering thread to catch up
 }
 
 // Set up event listeners for color switches
