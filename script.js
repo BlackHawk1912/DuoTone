@@ -52,7 +52,7 @@ document.getElementById("uploadButton").addEventListener("click", function () {
 document
   .getElementById("downloadButton")
   .addEventListener("click", async function () {
-    const canvas = document.getElementById("duotoneCanvas");
+    const canvas = document.getElementById("duotoneCanvas").classList.add("");
     const image = canvas.toDataURL("image/jpeg", 1.0); // Convert to JPEG format
 
     // Compress the image using a canvas and Blob
@@ -102,6 +102,7 @@ async function handleDuotoneSwitch() {
   // Update the UI first
   selectedRadioButton.checked = true;
 
+  document.getElementById("duotoneCanvas").classList.add("loadingAnimation");
   // Use setTimeout to allow the UI to update before starting the long-running operation
   setTimeout(async () => {
     await Duotone(
@@ -111,6 +112,11 @@ async function handleDuotoneSwitch() {
       selectedRadioButton.dataset.color2,
       selectedRadioButton.dataset.color3
     );
+
+    // Remove loading style after Duotone is applied
+    document
+      .getElementById("duotoneCanvas")
+      .classList.remove("loadingAnimation");
   }, 0); // The 0 delay is enough to allow the rendering thread to catch up
 }
 

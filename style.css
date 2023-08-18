@@ -223,3 +223,13 @@ input[type="radio"][name="colorSwitch"] {
   outline: 3px solid white;
   outline-offset: 2.5px;
 }
+
+.loadingAnimation {
+  -webkit-animation: grayscale 0.5s ease-in;
+}
+
+@-webkit-keyframes grayscale {
+  0% { -webkit-filter: brightness(1) grayscale(none); }
+  100% { -webkit-filter: brightness(1.4) grayscale(1); }
+}
+
