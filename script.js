@@ -102,7 +102,7 @@ async function handleDuotoneSwitch() {
   // Update the UI first
   selectedRadioButton.checked = true;
 
-  document.getElementById("loading-spinner").style.display = "flex";
+  document.getElementById("duotoneCanvas").classList.add("loadingAnimation");
   // Use setTimeout to allow the UI to update before starting the long-running operation
   setTimeout(async () => {
     await Duotone(
@@ -114,7 +114,9 @@ async function handleDuotoneSwitch() {
     );
 
     // Remove loading style after Duotone is applied
-    document.getElementById("loading-spinner").style.display = "none";
+    document
+      .getElementById("duotoneCanvas")
+      .classList.remove("loadingAnimation");
   }, 0); // The 0 delay is enough to allow the rendering thread to catch up
 }
 
